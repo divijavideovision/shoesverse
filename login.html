@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Login - ShoeVerse</title>
+  <link rel="stylesheet" href="style.css"/>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header class="header">
+    <div class="brand">
+      <div class="logo">SV</div>
+      <div class="site-title">ShoeVerse</div>
+    </div>
+  </header>
+
+  <main class="container">
+    <h2>Login</h2>
+    <div class="form">
+      <input id="login-user" class="input" placeholder="Username">
+      <input id="login-pass" class="input" type="password" placeholder="Password">
+      <button class="btn primary" onclick="doLogin()">Login</button>
+      <p class="small center">New? <a href="register.html">Create account</a></p>
+    </div>
+  </main>
+
+  <script>
+    function doLogin(){
+      const u = document.getElementById('login-user').value.trim();
+      const p = document.getElementById('login-pass').value.trim();
+      const res = window.app.login(u, p);
+      if(res.ok){
+        alert('Welcome ' + u);
+        location.href = 'index.html';
+      } else {
+        alert(res.msg);
+      }
+    }
+  </script>
+</body>
+</html>

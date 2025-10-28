@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>ShoeVerse</title>
+<link rel="stylesheet" href="style.css"/>
+<script src="script.js" defer></script>
+</head>
+<body>
+  <header class="header">
+    <div class="brand"><div class="logo">SV</div><div class="site-title">ShoeVerse</div></div>
+    <nav class="nav" aria-label="Main navigation">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+<a href="contact.html">Contact</a>
+
+      <a href="product.html">Shop</a>
+      <a href="cart.html">Cart <span id="nav-cart-count" style="background:#e6eefc;color:#0b4a86;padding:2px 8px;border-radius:8px;margin-left:6px">0</span></a>
+      <a href="login.html" id="nav-account">Profile</a>
+      <a href="admin.html">Admin</a>
+    </nav>
+  </header>
+  <main class="container">
+    <section class="hero">
+      <div class="left">
+        <h1>Step into style — premium kicks, made for you.</h1>
+        <p>Curated collection. Smooth comfort. Clean aesthetics. Explore our top picks today.</p>
+        <p style="margin-top:12px"><button class="btn" onclick="location.href='product.html'">Browse Collection</button></p>
+      </div>
+      <div class="right"><img src="images/shoe1.jpg" alt="feature" style="width:320px;border-radius:10px"></div>
+    </section>
+    <h3 style="margin-top:18px">Featured</h3>
+    <div class="products">
+
+      <div class="card">
+        <img src="images/shoe1.jpg" alt="shoe1">
+        <h4>Product 1</h4>
+        <div class="price">₹3999</div>
+        <p><button class="btn" onclick="location.href='product.html'">View</button></p>
+      </div>
+    
+      <div class="card">
+        <img src="images/shoe2.jpg" alt="shoe2">
+        <h4>Product 2</h4>
+        <div class="price">₹4999</div>
+        <p><button class="btn" onclick="location.href='product.html'">View</button></p>
+      </div>
+    
+      <div class="card">
+        <img src="images/shoe3.jpg" alt="shoe3">
+        <h4>Product 3</h4>
+        <div class="price">₹5999</div>
+        <p><button class="btn" onclick="location.href='product.html'">View</button></p>
+      </div>
+    
+    </div>
+    <footer class="footer">© ShoeVerse</footer>
+  </main>
+</body>
+</html>

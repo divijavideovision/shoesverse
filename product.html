@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Shop - ShoeVerse</title>
+<link rel="stylesheet" href="style.css"/>
+<script src="script.js" defer></script>
+</head>
+<body>
+  <header class="header">
+    <div class="brand"><div class="logo">SV</div><div class="site-title">ShoeVerse</div></div>
+    <nav class="nav"><a href="index.html">Home</a><a href="product.html">Shop</a><a href="cart.html">Cart <span id="nav-cart-count" style="background:#e6eefc;color:#0b4a86;padding:2px 8px;border-radius:8px;margin-left:6px">0</span></a><a href="login.html" id="nav-account">Profile</a></nav>
+  </header>
+  <main class="container">
+    <h2>All Products</h2>
+    <div style="margin-bottom:12px">
+      <button class="btn" onclick="renderProducts('All')">All</button>
+      <button class="btn" onclick="renderProducts('Men')">Men</button>
+      <button class="btn" onclick="renderProducts('Women')">Women</button>
+      <button class="btn" onclick="renderProducts('Kids')">Kids</button>
+    </div>
+    <div id="product-grid" class="products"></div>
+    <footer class="footer">Free shipping above ₹5000</footer>
+  </main>
+<script>
+function renderProducts(category){
+  const grid = document.getElementById('product-grid');
+  grid.innerHTML='';
+  const list = window.app.PRODUCTS.filter(p => category==='All' ? true : p.category===category);
+  list.forEach(p=>{
+    const div = document.createElement('div'); div.className='card';
+    div.innerHTML = `<img src="${p.img}" alt="${p.name}"><h4>${p.name}</h4><div class="price">₹${p.price}</div><p><button class="btn" onclick="app.addToCart(${p.id})">Add to Cart</button></p>`;
+    grid.appendChild(div);
+  });
+}
+document.addEventListener('DOMContentLoaded', ()=> renderProducts('All'));
+</script>
+</body>
+</html>

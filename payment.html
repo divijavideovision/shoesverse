@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Payment - ShoeVerse</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 0;
+    }
+
+    .payment-container {
+      max-width: 600px;
+      margin: 60px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    h2 {
+      color: #222;
+      margin-bottom: 10px;
+    }
+
+    .payment-options {
+      text-align: left;
+      margin: 25px 0;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      cursor: pointer;
+    }
+
+    input[type="radio"] {
+      margin-right: 10px;
+    }
+
+    .btn {
+      background: #007bff;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      width: 100%;
+    }
+
+    .btn:hover {
+      background: #0056b3;
+    }
+
+    .success {
+      text-align: center;
+      color: green;
+      font-weight: 600;
+      margin-top: 25px;
+      font-size: 18px;
+    }
+
+    .total-amount {
+      text-align: center;
+      font-weight: 600;
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="payment-container">
+    <h2>Choose Payment Method</h2>
+    <div class="total-amount">Total: ₹<span id="total"></span></div>
+
+    <div class="payment-options">
+      <label><input type="radio" name="method" value="UPI"> UPI / Google Pay</label>
+      <label><input type="radio" name="method" value="Card"> Credit / Debit Card</label>
+      <label><input type="radio" name="method" value="COD"> Cash on Delivery</label>
+    </div>
+
+    <button class="btn" id="pay-btn">Pay Now</button>
+    <div class="success" id="success-msg"></div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const user = app.getCurrent();
+      if (!user) {
+        alert("Please login to continue.");
+        location.href = "login.html";
+        return;
+      }
+
+      const cart = app.getCart(user);
+      if (!cart || cart.length === 0) {
+        alert("Your cart is empty.");
+        location.href = "cart.html";
+        return;
+      }
+
+      const total = cart.reduce((sum, i) => sum + i.price, 0);
+      document.getElementById("total").textContent = total;
+
+      document.getElementById("pay-btn").addEventListener("click", function () {
+        const selected = document.querySelector('input[name="method"]:checked');
+        if (!selected) {
+          alert("Please select a payment method.");
+          return;
+        }
+
+        const method = selected.value;
+        app.checkout(); // clears cart + saves sale data (still in localStorage)
+        document.getElementById("success-msg").innerHTML = `
+          ✅ Payment Successful via <b>${method}</b>!<br>
+          Thank you for shopping with <b>ShoeVerse</b> 👟<br><br>
+          <a href="index.html" style="color:#007bff;text-decoration:none;">Continue Shopping</a>
+        `;
+        document.getElementById("pay-btn").style.display = "none";
+      });
+    });
+  </script>
+</body>
+</html>

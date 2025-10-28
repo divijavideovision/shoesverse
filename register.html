@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Register - ShoeVerse</title>
+  <link rel="stylesheet" href="style.css"/>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header class="header">
+    <div class="brand">
+      <div class="logo">SV</div>
+      <div class="site-title">ShoeVerse</div>
+    </div>
+  </header>
+
+  <main class="container">
+    <h2>Create account</h2>
+    <div class="form">
+      <input id="reg-user" class="input" placeholder="Username">
+      <input id="reg-pass" class="input" type="password" placeholder="Password">
+      <button class="btn primary" onclick="doRegister()">Create</button>
+      <p class="small center">Already have an account? <a href="login.html">Login</a></p>
+    </div>
+  </main>
+
+  <script>
+    function doRegister(){
+      const u = document.getElementById('reg-user').value.trim();
+      const p = document.getElementById('reg-pass').value.trim();
+      const res = window.app.register(u, p);
+      if(res.ok){
+        alert('Account created successfully! You can now login.');
+        location.href = 'login.html';
+      } else {
+        alert(res.msg);
+      }
+    }
+  </script>
+</body>
+</html>

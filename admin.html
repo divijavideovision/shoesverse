@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Admin - ShoeVerse</title><link rel="stylesheet" href="style.css"/><script src="script.js" defer></script></head>
+<body>
+<header class="header"><div class="brand"><div class="logo">SV</div><div class="site-title">ShoeVerse Admin</div></div><nav class="nav"><a href="index.html">Home</a></nav></header>
+<main class="container"><h2>All Sales (Admin)</h2><div id="admin-sales"></div></main>
+<script>
+document.addEventListener('DOMContentLoaded', ()=>{
+  if(!window.app.requireAdmin()){ document.getElementById('admin-sales').innerHTML='<p class="small center">Access denied</p>'; return; }
+  const sales = window.app.getSales(); const el=document.getElementById('admin-sales');
+  if(sales.length===0){ el.innerHTML='<p class="small center">No sales yet.</p>'; return; }
+  el.innerHTML = sales.map(s=>`<div style="background:#fff;padding:12px;border-radius:8px;margin-bottom:10px"><div><strong>User:</strong> ${s.user}</div><div class="small">Date: ${s.date} | Total: ₹${s.total}</div><div class="small">Items: ${s.items.map(i=>i.name).join(', ')}</div></div>`).join('');
+});
+</script>
+</body>
+</html>

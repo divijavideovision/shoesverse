@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShoeVerse | My Purchases</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #fff;
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    header h1 {
+      margin: 0;
+      color: #333;
+      font-weight: 600;
+    }
+
+    nav a {
+      text-decoration: none;
+      margin: 0 15px;
+      color: #333;
+      font-weight: 500;
+    }
+
+    nav a:hover {
+      color: #007bff;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 50px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      color: #222;
+      margin-bottom: 30px;
+    }
+
+    .purchase-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .purchase-item {
+      background: #f9f9f9;
+      padding: 15px 20px;
+      border-radius: 10px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+
+    .purchase-item h3 {
+      margin: 0 0 5px;
+      color: #333;
+    }
+
+    .purchase-item p {
+      margin: 0;
+      color: #555;
+    }
+
+    .product-img {
+      width: 80px;
+      height: 80px;
+      border-radius: 10px;
+      object-fit: cover;
+      margin-right: 15px;
+    }
+
+    .purchase-item-details {
+      display: flex;
+      align-items: center;
+    }
+
+    .empty-msg {
+      text-align: center;
+      color: #777;
+      font-size: 16px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>ShoeVerse 👟</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="product.html">Shop</a>
+      <a href="cart.html">Cart</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h2>My Purchases</h2>
+    <div id="purchase-list" class="purchase-list"></div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const user = app.getCurrent();
+      const list = document.getElementById("purchase-list");
+
+      if (!user) {
+        alert("Please login to view purchases.");
+        location.href = "login.html";
+        return;
+      }
+
+      const allSales = app.getSales();
+      const myOrders = allSales.filter(s => s.user === user);
+
+      if (myOrders.length === 0) {
+        list.innerHTML = "<p class='empty-msg'>You haven’t purchased anything yet 🛍️</p>";
+        return;
+      }
+
+      let html = "";
+      myOrders.forEach(order => {
+        html += `
+          <div class="purchase-item">
+            <h3>Order on ${order.date}</h3>
+            <p><strong>Total:</strong> ₹${order.total}</p>
+            ${order.items.map(i => `
+              <div class="purchase-item-details">
+                <img src="${i.img}" alt="${i.name}" class="product-img">
+                <p>${i.name} - ₹${i.price}</p>
+              </div>
+            `).join("")}
+          </div>
+        `;
+      });
+
+      list.innerHTML = html;
+    });
+  </script>
+</body>
+</html>

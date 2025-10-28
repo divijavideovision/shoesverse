@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShoeVerse | Cart</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { font-family:"Poppins",sans-serif; background:#f5f5f5; margin:0; padding:0; }
+    header{ background:#fff; padding:15px 40px; display:flex; justify-content:space-between; align-items:center; box-shadow:0 2px 8px rgba(0,0,0,0.1); position:sticky; top:0; z-index:10; }
+    header h1{ margin:0; color:#333; font-weight:600; }
+    nav a{ text-decoration:none; margin:0 15px; color:#333; font-weight:500; }
+    nav a:hover{ color:#007bff; }
+    .container{ max-width:900px; margin:40px auto; background:#fff; border-radius:12px; padding:30px; box-shadow:0 2px 10px rgba(0,0,0,0.1); }
+    .cart-list{ display:flex; flex-direction:column; gap:15px; }
+    .cart-item{ display:flex; align-items:center; justify-content:space-between; background:#fafafa; padding:15px; border-radius:10px; box-shadow:0 1px 4px rgba(0,0,0,0.08); }
+    .cart-item img{ width:90px; height:90px; border-radius:10px; object-fit:cover; margin-right:20px; }
+    .cart-details{ flex:1; }
+    .cart-details h3{ margin:0 0 5px 0; font-size:18px; }
+    .cart-details p{ margin:0; color:#555; }
+    .remove-btn{ background:crimson; color:#fff; border:none; padding:6px 12px; border-radius:5px; cursor:pointer; font-size:14px; }
+    .remove-btn:hover{ background:darkred; }
+    #checkout-btn{ background:#007bff; color:#fff; border:none; padding:12px 20px; border-radius:6px; cursor:pointer; font-size:16px; margin-top:20px; width:100%; }
+    #checkout-btn:hover{ background:#0056b3; }
+    .empty-cart{ text-align:center; font-size:18px; color:#555; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>ShoeVerse 👟</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="product.html">Products</a>
+      <a href="cart.html">Cart (<span id="nav-cart-count">0</span>)</a>
+      <!-- Profile link removed from this header -->
+      <a href="admin.html">Admin</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div id="cart-items"></div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // Keep nav updated (cart count / username behavior still handled inside script.js)
+      if (typeof app !== 'undefined' && app.updateNavCount) app.updateNavCount();
+
+      const user = (typeof app !== 'undefined' && app.getCurrent) ? app.getCurrent() : null;
+      const container = document.getElementById('cart-items');
+
+      if (!user) {
+        container.innerHTML = "<p class='empty-cart'>Please login to view your cart.</p>";
+        return;
+      }
+
+      const cart = app.getCart(user);
+      if (!cart || cart.length === 0) {
+        container.innerHTML = "<p class='empty-cart'>Your cart is empty 🛒</p>";
+        return;
+      }
+
+      let total = 0;
+      container.innerHTML = `
+        <h2>Your Cart</h2>
+        <div class="cart-list">
+          ${cart.map((item, index) => {
+            total += item.price;
+            return `
+              <div class="cart-item">
+                <img src="${item.img}" alt="${item.name}">
+                <div class="cart-details">
+                  <h3>${item.name}</h3>
+                  <p>₹${item.price}</p>
+                </div>
+                <button class="remove-btn" data-index="${index}">Remove</button>
+              </div>
+            `;
+          }).join('')}
+        </div>
+        <h3>Total: ₹${total}</h3>
+        <button id="checkout-btn">Proceed to Checkout</button>
+      `;
+
+      document.querySelectorAll(".remove-btn").forEach(btn=>{
+        btn.addEventListener('click', function(){
+          const idx = parseInt(this.getAttribute('data-index'));
+          cart.splice(idx,1);
+          app.saveCart(user, cart);
+          app.updateNavCount && app.updateNavCount();
+          location.reload();
+        });
+      });
+
+      document.getElementById('checkout-btn').addEventListener('click', function(){
+        location.href = 'payment.html';
+      });
+    });
+  </script>
+</body>
+</html>
